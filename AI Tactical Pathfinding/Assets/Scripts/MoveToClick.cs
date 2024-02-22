@@ -13,9 +13,14 @@ public class MoveToClick : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f))
             {
-                transform.position = hit.point;
-                OnMove.Invoke();
+                SetPosition(hit.point);
             }
         }
+    }
+
+    public void SetPosition (Vector3 pos)
+    {
+        transform.position = pos;
+        OnMove.Invoke();
     }
 }
