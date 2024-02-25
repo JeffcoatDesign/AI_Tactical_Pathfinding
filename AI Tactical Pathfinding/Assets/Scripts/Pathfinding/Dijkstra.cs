@@ -28,7 +28,7 @@ public class Dijkstra
             {
                 Node endNode = connection.GetToNode();
                 NodeRecord endNodeRecord = new();
-                float endNodeCost = current.costSoFar + connection.GetCost();
+                float endNodeCost = current.costSoFar + connection.GetCost() + connection.GetInfluence();
 
                 if (closed.Contains(endNode))
                     continue;

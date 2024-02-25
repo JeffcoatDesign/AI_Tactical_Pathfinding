@@ -10,7 +10,7 @@ public class ArriveModified : SteeringBehavior
     public GameObject target;
 
     float maxAcceleration = 100f;
-    float maxSpeed = 10f;
+    public float maxSpeed = 10f;
 
     // the radius for arriving at the target
     float targetRadius = 0.5f;
@@ -19,7 +19,7 @@ public class ArriveModified : SteeringBehavior
     float slowRadius = 3f;
 
     // the time over which to achieve target speed
-    float timeToTarget = 0.1f;
+    public float timeToTarget = 0.1f;
 
     protected virtual Vector3 getTargetPosition()
     {

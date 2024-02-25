@@ -26,7 +26,7 @@ public class Graph
         Node[] nodes = GameObject.FindObjectsByType<Node>(FindObjectsSortMode.None);
         foreach (Node fromNode in nodes)
         {
-            foreach (Node toNode in fromNode.ConnectsTo)
+            foreach (Node toNode in fromNode.connectsTo)
             {
                 float cost = (toNode.transform.position - fromNode.transform.position).magnitude;
                 Connection c = new Connection(cost, fromNode, toNode);

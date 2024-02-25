@@ -13,10 +13,16 @@ public class FollowPath : ArriveModified
 
     protected override Vector3 getTargetPosition()
     {
-        if (path.PathObjects.Length < 1) return character.transform.position;
+        if (path.Length < 1) {
+            return character.transform.position; }
         Vector3 directionToTarget = path.PathObjects[index].position - character.transform.position;
         float distanceToTarget = directionToTarget.magnitude;
-
+        float speedMod = path.GetSpeedModifier(index);
+        if (speedMod != 0)
+        {
+            speedMod = 10 / speedMod;
+        }
+        maxSpeed = 4 - speedMod;
         if (distanceToTarget < threshold)
         {
             index++;
@@ -29,7 +35,6 @@ public class FollowPath : ArriveModified
                 if (reverse) path.Reverse();
             }
         }
-
 
         return path.PathObjects[index].position;
     }

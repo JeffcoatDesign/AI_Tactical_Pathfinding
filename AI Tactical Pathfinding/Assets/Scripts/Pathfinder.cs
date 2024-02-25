@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,7 +19,8 @@ public class Pathfinder : Kinematic
         isInitialized = true;
         myMoveType = new FollowPath();
         myMoveType.character = this;
-        myMoveType.threshold = 0.5f;
+        myMoveType.threshold = 0.7f;
+        myMoveType.timeToTarget = 0.2f;
 
         CalculatePath(FindClosestNode(myTarget.transform.position));
 
@@ -41,14 +43,18 @@ public class Pathfinder : Kinematic
         if (pathfinding == null)
             Debug.Log("pathfinding is null");
         Transform[] pathPoints = new Transform[pathfinding.Length + 1];
+        float[] speedModifiers = new float[pathfinding.Length + 1];
         int i = 0;
         foreach (var pathPoint in pathfinding)
         {
             pathPoints[i] = pathPoint.GetFromNode().transform;
+            speedModifiers[i] = pathPoint.GetInfluence();
             i++;
         }
         pathPoints[i] = end.transform;
-        Path path = new Path(pathPoints);
+        if (pathfinding.Length > 1)
+        speedModifiers[i] = pathfinding.Last().GetInfluence();
+        Path path = new (pathPoints, speedModifiers);
 
         myMoveType.path = path;
         myMoveType.ResetIndex();
@@ -73,10 +79,7 @@ public class Pathfinder : Kinematic
     public void UpdateTarget()
     {
         Node closestToTarget = FindClosestNode(myTarget.transform.position);
-        if (end != closestToTarget)
-        {
-            CalculatePath(closestToTarget);
-        }
+        CalculatePath(closestToTarget);
     }
 
     protected override void Update()
